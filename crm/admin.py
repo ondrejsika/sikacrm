@@ -15,6 +15,12 @@ class ClientAdmin(admin.ModelAdmin):
         'last_update',
         'owner',
     )
+    list_filter = (
+        's1',
+        's2',
+        's3',
+        'owner',
+    )
 
 
 admin.site.register(Client, ClientAdmin)
