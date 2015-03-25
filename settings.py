@@ -63,6 +63,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
     'django.core.context_processors.request',
 )
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'crm', 'templates'),
+)
 
 ROOT_URLCONF = 'urls'
 
