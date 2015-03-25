@@ -13,6 +13,7 @@ class ClientAdmin(admin.ModelAdmin):
         's3',
         'created',
         'last_update',
+        'owner',
     )
 
 

@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Client(models.Model):
+    owner = models.ForeignKey('auth.User', null=True, blank=True)
     name = models.CharField(max_length=128)
     www = models.URLField()
     email = models.EmailField()
