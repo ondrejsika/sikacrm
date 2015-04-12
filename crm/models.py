@@ -29,10 +29,20 @@ class Project(models.Model):
     def __unicode__(self):
         return u'%s #%s' % (self.name, self.id)
 
+SERVERS = (
+    ('ann.srv', 'ann'),
+    ('terka.srv', 'terka'),
+    ('github01.vloc', 'github'),
+    ('wedos01.vloc', 'wedos'),
+    ('virtufy01.vloc', 'virtufy'),
+)
+
 
 class Hosting(models.Model):
     project = models.ForeignKey(Project)
     actual_price = models.IntegerField()
+    server = models.CharField(max_length=32, choices=SERVERS)
+    url = models.URLField()
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
     is_free = models.BooleanField(default=False)

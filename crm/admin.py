@@ -58,9 +58,15 @@ class HostingAdmin(admin.ModelAdmin):
     list_display = (
         'project',
         lambda obj: obj.project.client,
+        'url',
+        'server',
         'actual_price',
         'is_active',
         _is_payed,
+    )
+    list_filter = (
+        'is_active',
+        'server',
     )
     inlines = (
         HostingPaymentInline,
