@@ -29,6 +29,10 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'client',
+        's1',
+        's2',
+        's3',
+        'owner',
     )
     list_filter = (
         'client',
