@@ -46,6 +46,8 @@ class HostingPaymentInline(admin.TabularInline):
 
 class HostingAdmin(admin.ModelAdmin):
     def _is_payed(obj):
+        if obj.is_free:
+            return 'FREE'
         last = obj.hostingpayment_set.first()
         if not last:
             return 'NO (never payed)'
@@ -56,6 +58,7 @@ class HostingAdmin(admin.ModelAdmin):
     list_display = (
         'project',
         lambda obj: obj.project.client,
+        'actual_price',
         'is_active',
         _is_payed,
     )

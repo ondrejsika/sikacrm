@@ -35,6 +35,7 @@ class Hosting(models.Model):
     actual_price = models.IntegerField()
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
+    is_free = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u'Hosting: %s #%s' % (self.project.name, self.id)
