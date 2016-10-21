@@ -67,6 +67,17 @@ class EmailAccount(models.Model):
         return '%s #%s' % (self.email, self.id)
 
 
+class EmailAccountFolder(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    email_account = models.ForeignKey(EmailAccount, related_name='folder_set')
+    folder = models.CharField(max_length=64)
+    last_id = models.IntegerField(null=True, blank=True)
+
+    def __unicode__(self):
+        return '%s %s #%s' % (self.email_account.email, self.folder, self.id)
+
+
 class Email(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 

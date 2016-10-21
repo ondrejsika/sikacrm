@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib import admin
 
-from models import Account, Case, Contact, Email, EmailAccount
+from models import Account, Case, Contact, Email, EmailAccount, EmailAccountFolder
 
 
 class AccountAdmin(admin.ModelAdmin):
@@ -70,4 +70,5 @@ admin.site.register(Account, AccountAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Case, CaseAdmin)
 admin.site.register(EmailAccount)
+admin.site.register(EmailAccountFolder)
 admin.site.register(Email, EmailAdmin)
