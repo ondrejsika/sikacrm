@@ -54,6 +54,9 @@ class CampaignEmail(models.Model):
     email_to = models.EmailField()
     variables = models.TextField(default='{}')
 
+    rendered_subject = models.CharField(max_length=128, null=True, blank=True)
+    rendered_body = models.TextField(null=True, blank=True)
+
     def __unicode__(self):
         return 'CampaignEmail #%s' % self.id
 
