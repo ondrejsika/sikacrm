@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'south',
 
     'crm',
+    'mailing',
 )
 
 MIDDLEWARE_CLASSES = (
