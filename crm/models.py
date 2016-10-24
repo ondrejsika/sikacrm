@@ -78,13 +78,38 @@ class EmailAccountFolder(models.Model):
         return '%s %s #%s' % (self.email_account.email, self.folder, self.id)
 
 
+class EmailConversation(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    email_account = models.ForeignKey(EmailAccount, related_name='email_conversation_set')
+    case = models.ForeignKey(Case, null=True, blank=True)
+    name = models.CharField(max_length=64, null=True, blank=True)
+
+    def __unicode__(self):
+        return '%s #%s' % (self.name, self.id)
+
+
+class EmailConversationReference(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    email_conversation = models.ForeignKey(EmailConversation, null=True, blank=True)
+
+    reference = models.CharField(max_length=256, db_index=True)
+
+    def __unicode__(self):
+        return 'EmailConversationReference #%s' % self.id
+
+
 class Email(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
-    case = models.ForeignKey(Case, null=True, blank=True)
+    email_conversation = models.ForeignKey(EmailConversation)
 
     email_account = models.ForeignKey(EmailAccount, related_name='email_set')
 
+    message_id = models.CharField(max_length=256)
+
+    date = models.DateTimeField()
     email_from = models.CharField(max_length=256, null=True, blank=True)
     email_to = models.EmailField(max_length=256, null=True, blank=True)
 
@@ -96,5 +121,8 @@ class Email(models.Model):
     subject = models.CharField(max_length=256, null=True, blank=True)
     body = models.TextField(null=True, blank=True)
 
+    class Meta:
+        ordering = ('-date', )
+
     def __unicode__(self):
-        return 'Email #%s' % (self.id)
+        return 'Email #%s' % self.id

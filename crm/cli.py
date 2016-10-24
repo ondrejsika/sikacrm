@@ -1,7 +1,12 @@
+import datetime
+import time
+
 import mailing.cli as mailing_cli
 import libimap
 
-from models import EmailAccount, Email
+from email.utils import mktime_tz
+from models import EmailAccount, Email, EmailConversationReference, EmailConversation
+
 
 def crm_load_emails():
     for email_account in EmailAccount.objects.all():
@@ -21,14 +26,42 @@ def crm_load_emails():
                 if id and id <= folder.last_id:
                     continue
 
-                m = imap.get_email(id)
+
+                message = imap.get_email(id)
+
+                if message.get_references():
+                    references = EmailConversationReference.objects.filter(reference__in=message.get_references())
+                    if references:
+                        email_conversation = references.first().email_conversation
+                    else:
+                        email_conversation = EmailConversation(email_account=email_account)
+                        email_conversation.save()
+                else:
+                    email_conversation = EmailConversation(email_account=email_account)
+                    email_conversation.save()
+                    email_conversation_reference, _ = EmailConversationReference.objects.get_or_create(
+                        reference=message.get_message_id(),
+                        email_conversation=email_conversation,
+                    )
+                    email_conversation_reference.save()
+
+                for ref in message.get_references():
+                    email_conversation_reference, _ = EmailConversationReference.objects.get_or_create(
+                        reference=ref,
+                        email_conversation=email_conversation,
+                    )
+                    email_conversation_reference.save()
+
                 Email(
+                    email_conversation=email_conversation,
                     email_account=email_account,
-                    email_from=m['from'],
-                    email_to=m['to'],
-                    folder='inbox' if m['to'] == email_account.email else 'outbox',
-                    subject=m['subject'],
-                    body=imap.get_first_text_block(m),
+                    message_id=message.get_message_id(),
+                    date=datetime.datetime.fromtimestamp(mktime_tz(message.get_date())),
+                    email_from=message.get_from(),
+                    email_to=message.get_to(),
+                    folder='inbox' if message._message['to'] == email_account.email else 'outbox',
+                    subject=message.get_subject(),
+                    body=message.get_body(),
                 ).save()
             folder.last_id = id
             folder.save()

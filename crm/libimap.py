@@ -1,5 +1,49 @@
 import imaplib
 import email
+from email.header import decode_header
+from email.utils import parsedate_tz
+
+
+class Email(object):
+    def __init__(self, raw_message):
+        self._raw_message = raw_message
+
+        self._message = email.message_from_string(self._raw_message)
+
+    def get_from(self):
+        return decode_header(self._message['from'])[0][0]
+
+    def get_to(self):
+        return decode_header(self._message['to'])[0][0]
+
+    def get_subject(self):
+        return decode_header(self._message['subject'])[0][0]
+
+    def get_message_id(self):
+        return decode_header(self._message['message-id'])[0][0]
+
+    def get_references(self):
+        if not self._message['references']:
+            return []
+        return self._message['references'].split('\r\n ')
+
+    def get_date(self):
+        return parsedate_tz(decode_header(self._message['date'])[0][0])
+
+    def get_body(self):
+        if self._message.is_multipart():
+            for part in self._message.walk():
+                ctype = part.get_content_type()
+                cdispo = str(part.get('Content-Disposition'))
+
+                # skip any text/plain (txt) attachments
+                if ctype == 'text/plain' and 'attachment' not in cdispo:
+                    body = part.get_payload(decode=True)  # decode
+                    break
+        # not multipart - i.e. plain text, no attachments, keeping fingers crossed
+        else:
+            body = self._message.get_payload(decode=True)
+        return body
 
 
 class IMAP(object):
@@ -24,18 +68,4 @@ class IMAP(object):
         return data[0][1]
 
     def get_email(self, email_id):
-        return self.parse_email(self.get_raw_email(email_id))
-
-    @staticmethod
-    def parse_email(raw_email):
-        return email.message_from_string(raw_email)
-
-    @staticmethod
-    def get_first_text_block(email_message_instance):
-        maintype = email_message_instance.get_content_maintype()
-        if maintype == 'multipart':
-            for part in email_message_instance.get_payload():
-                if part.get_content_maintype() == 'text':
-                    return part.get_payload()
-        elif maintype == 'text':
-            return email_message_instance.get_payload()
+        return Email(self.get_raw_email(email_id))

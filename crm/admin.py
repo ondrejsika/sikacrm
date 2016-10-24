@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib import admin
 
-from models import Account, Case, Contact, Email, EmailAccount, EmailAccountFolder
+from models import Account, Case, Contact, Email, EmailAccount, EmailAccountFolder, EmailConversation, EmailConversationReference
 
 
 class AccountAdmin(admin.ModelAdmin):
@@ -51,18 +51,34 @@ class EmailAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'subject',
+        'date',
         'email_from',
         'email_to',
-        'case',
+        'email_conversation',
 
         'email_account',
     )
     list_filter = (
         'email_from',
         'email_to',
-        'case',
+        'email_conversation',
 
         'email_account',
+    )
+
+
+class EmailConversationAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'account',
+
+        'owner',
+    )
+    list_filter = (
+        'account',
+
+        'owner',
     )
 
 
@@ -72,3 +88,5 @@ admin.site.register(Case, CaseAdmin)
 admin.site.register(EmailAccount)
 admin.site.register(EmailAccountFolder)
 admin.site.register(Email, EmailAdmin)
+admin.site.register(EmailConversation)
+admin.site.register(EmailConversationReference)
