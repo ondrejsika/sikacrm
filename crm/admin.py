@@ -56,11 +56,13 @@ class CaseAdmin(admin.ModelAdmin):
         'id',
         'name',
         'account',
+        'state',
 
         'owner',
     )
     list_filter = (
         'account',
+        'state',
 
         'owner',
     )

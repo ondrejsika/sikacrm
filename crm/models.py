@@ -31,10 +31,24 @@ class Contact(models.Model):
 
 
 class Case(models.Model):
+    NEW = 'new'
+    IN_PROGRESS = 'in_progress'
+    APPROVED = 'approved'
+    DONE = 'done'
+    CANCELLED = 'cancelled'
+
     created = models.DateTimeField(auto_now_add=True)
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)
+
+    state = models.CharField(max_length=16, default=NEW, choices=(
+        (NEW, 'New'),
+        (IN_PROGRESS, 'In progress'),
+        (APPROVED, 'Approved'),
+        (DONE, 'Done'),
+        (CANCELLED, 'Cancelled'),
+    ))
 
     name = models.CharField(max_length=32, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
