@@ -111,7 +111,7 @@ class Email(models.Model):
 
     date = models.DateTimeField()
     email_from = models.CharField(max_length=256, null=True, blank=True)
-    email_to = models.EmailField(max_length=256, null=True, blank=True)
+    email_to = models.CharField(max_length=256, null=True, blank=True)
 
     folder = models.CharField(max_length=16, choices=(
         ('inbox', 'Inbox'),

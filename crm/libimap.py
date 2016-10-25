@@ -5,7 +5,7 @@ from email.utils import parsedate_tz
 
 
 def _decode(header):
-    return ''.join(data for data, _ in decode_header(header))
+    return ' '.join(data for data, _ in decode_header(header))
 
 
 class Email(object):
