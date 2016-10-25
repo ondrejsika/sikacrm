@@ -4,6 +4,10 @@ from email.header import decode_header
 from email.utils import parsedate_tz
 
 
+def _decode(header):
+    return ''.join(data for data, _ in decode_header(header))
+
+
 class Email(object):
     def __init__(self, raw_message):
         self._raw_message = raw_message
@@ -11,16 +15,16 @@ class Email(object):
         self._message = email.message_from_string(self._raw_message)
 
     def get_from(self):
-        return decode_header(self._message['from'])[0][0]
+        return _decode(self._message['from'])
 
     def get_to(self):
-        return decode_header(self._message['to'])[0][0]
+        return _decode(self._message['to'])
 
     def get_subject(self):
-        return decode_header(self._message['subject'])[0][0]
+        return _decode(self._message['subject'])
 
     def get_message_id(self):
-        return decode_header(self._message['message-id'])[0][0]
+        return _decode(self._message['message-id'])
 
     def get_references(self):
         if not self._message['references']:
@@ -28,7 +32,7 @@ class Email(object):
         return self._message['references'].split('\r\n ')
 
     def get_date(self):
-        return parsedate_tz(decode_header(self._message['date'])[0][0])
+        return parsedate_tz(_decode(self._message['date']))
 
     def get_body(self):
         if self._message.is_multipart():
