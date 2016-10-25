@@ -29,7 +29,7 @@ class Email(object):
     def get_references(self):
         if not self._message['references']:
             return []
-        return self._message['references'].split('\r\n ')
+        return self._message['references'].replace('\r\n', '').split()
 
     def get_date(self):
         return parsedate_tz(_decode(self._message['date']))
