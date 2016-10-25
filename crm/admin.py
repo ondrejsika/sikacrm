@@ -32,6 +32,11 @@ class ContactAdmin(admin.ModelAdmin):
     )
 
 
+class EmailConversationInline(admin.TabularInline):
+    model = EmailConversation
+    extra = 0
+
+
 class CaseAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -44,6 +49,9 @@ class CaseAdmin(admin.ModelAdmin):
         'account',
 
         'owner',
+    )
+    inlines = (
+        EmailConversationInline,
     )
 
 
@@ -67,18 +75,25 @@ class EmailAdmin(admin.ModelAdmin):
     )
 
 
+class EmailInline(admin.TabularInline):
+    model = Email
+    extra = 0
+
+
 class EmailConversationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'name',
-        'account',
+        'case',
 
-        'owner',
+        'email_account',
     )
     list_filter = (
-        'account',
-
-        'owner',
+        'email_account',
+        'case',
+    )
+    inlines = (
+        EmailInline,
     )
 
 
@@ -88,5 +103,5 @@ admin.site.register(Case, CaseAdmin)
 admin.site.register(EmailAccount)
 admin.site.register(EmailAccountFolder)
 admin.site.register(Email, EmailAdmin)
-admin.site.register(EmailConversation)
+admin.site.register(EmailConversation, EmailConversationAdmin)
 admin.site.register(EmailConversationReference)
