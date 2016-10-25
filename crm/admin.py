@@ -5,6 +5,16 @@ from django.contrib import admin
 from models import Account, Case, Contact, Email, EmailAccount, EmailAccountFolder, EmailConversation, EmailConversationReference
 
 
+class ContactInline(admin.TabularInline):
+    model = Contact
+    extra = 0
+
+
+class CaseInline(admin.TabularInline):
+    model = Case
+    extra = 0
+
+
 class AccountAdmin(admin.ModelAdmin):
     list_display = (
         'name',
@@ -13,6 +23,10 @@ class AccountAdmin(admin.ModelAdmin):
     )
     list_filter = (
         'owner',
+    )
+    inlines = (
+        ContactInline,
+        CaseInline,
     )
 
 
@@ -97,10 +111,20 @@ class EmailConversationAdmin(admin.ModelAdmin):
     )
 
 
+class EmailAccountFolderInline(admin.TabularInline):
+    model = EmailAccountFolder
+    extra = 0
+
+
+class EmailAccountAdmin(admin.ModelAdmin):
+    inlines = (
+        EmailAccountFolderInline,
+    )
+
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Case, CaseAdmin)
-admin.site.register(EmailAccount)
+admin.site.register(EmailAccount, EmailAccountAdmin)
 admin.site.register(EmailAccountFolder)
 admin.site.register(Email, EmailAdmin)
 admin.site.register(EmailConversation, EmailConversationAdmin)
