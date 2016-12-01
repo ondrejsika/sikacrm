@@ -18,6 +18,18 @@ class Account(models.Model):
 
     name = models.CharField(max_length=32)
 
+    company_id = models.CharField(max_length=32, null=True, blank=True)
+    vat_id = models.CharField(max_length=32, null=True, blank=True)
+
+    contact_address = models.TextField(null=True, blank=True)
+    billing_address = models.TextField(null=True, blank=True)
+
+    email = models.EmailField(null=True, blank=True)
+    phone = models.CharField(max_length=16, null=True, blank=True)
+    www = models.URLField(null=True, blank=True)
+
+    note = models.TextField(null=True, blank=True)
+
     last_activity = models.DateField(null=True, blank=True)
     next_activity = models.DateField(null=True, blank=True)
 
