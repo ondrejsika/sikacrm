@@ -19,11 +19,15 @@ class CaseInline(admin.TabularInline):
 class AccountAdmin(admin.ModelAdmin):
     list_display = (
         'name',
+        'last_activity',
+        'next_activity',
 
         'owner',
         'tag',
     )
     list_filter = (
+        'last_activity',
+        'next_activity',
         'owner',
         'tag',
     )

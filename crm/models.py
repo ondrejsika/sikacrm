@@ -18,6 +18,9 @@ class Account(models.Model):
 
     name = models.CharField(max_length=32)
 
+    last_activity = models.DateField(null=True, blank=True)
+    next_activity = models.DateField(null=True, blank=True)
+
     def __unicode__(self):
         return '%s #%s' % (self.name, self.id)
 
