@@ -2,7 +2,8 @@ import datetime
 
 from django.contrib import admin
 
-from models import Account, Case, Contact, Email, EmailAccount, EmailAccountFolder, EmailConversation, EmailConversationReference
+from models import Account, Case, Contact, Email, EmailAccount, EmailAccountFolder, EmailConversation,\
+    EmailConversationReference, Tag
 
 
 class ContactInline(admin.TabularInline):
@@ -20,9 +21,11 @@ class AccountAdmin(admin.ModelAdmin):
         'name',
 
         'owner',
+        'tag',
     )
     list_filter = (
         'owner',
+        'tag',
     )
     inlines = (
         ContactInline,
@@ -38,11 +41,13 @@ class ContactAdmin(admin.ModelAdmin):
         'phone',
 
         'owner',
+        'tag',
     )
     list_filter = (
         'account',
 
         'owner',
+        'tag',
     )
 
 
@@ -59,12 +64,14 @@ class CaseAdmin(admin.ModelAdmin):
         'state',
 
         'owner',
+        'tag',
     )
     list_filter = (
         'account',
         'state',
 
         'owner',
+        'tag',
     )
     inlines = (
         EmailConversationInline,
@@ -103,10 +110,12 @@ class EmailConversationAdmin(admin.ModelAdmin):
         'case',
 
         'email_account',
+        'tag',
     )
     list_filter = (
         'email_account',
         'case',
+        'tag',
     )
     inlines = (
         EmailInline,
@@ -123,6 +132,8 @@ class EmailAccountAdmin(admin.ModelAdmin):
         EmailAccountFolderInline,
     )
 
+
+admin.site.register(Tag)
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Case, CaseAdmin)

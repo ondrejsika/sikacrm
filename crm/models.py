@@ -3,10 +3,18 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=32)
+
+    def __unicode__(self):
+        return '%s #%s' % (self.name, self.id)
+
+
 class Account(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
+    tag = models.ForeignKey(Tag, null=True, blank=True)
 
     name = models.CharField(max_length=32)
 
@@ -19,6 +27,7 @@ class Contact(models.Model):
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)
+    tag = models.ForeignKey(Tag, null=True, blank=True)
 
     name = models.CharField(max_length=32)
     email = models.EmailField(null=True, blank=True)
@@ -41,6 +50,7 @@ class Case(models.Model):
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)
+    tag = models.ForeignKey(Tag, null=True, blank=True)
 
     state = models.CharField(max_length=16, default=NEW, choices=(
         (NEW, 'New'),
@@ -94,6 +104,7 @@ class EmailAccountFolder(models.Model):
 
 class EmailConversation(models.Model):
     created = models.DateTimeField(auto_now_add=True)
+    tag = models.ForeignKey(Tag, null=True, blank=True)
 
     email_account = models.ForeignKey(EmailAccount, related_name='email_conversation_set')
     case = models.ForeignKey(Case, null=True, blank=True)
