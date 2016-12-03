@@ -83,6 +83,26 @@ class Case(models.Model):
         return '%s #%s' % (self.name, self.id)
 
 
+class Contract(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    owner = models.ForeignKey('auth.User', null=True, blank=True)
+    account = models.ForeignKey(Account, null=True, blank=True)
+    case = models.ForeignKey(Case, null=True, blank=True)
+    tag = models.ForeignKey(Tag, null=True, blank=True)
+
+    start_at = models.DateTimeField()
+    price = models.IntegerField()
+    length = models.IntegerField(help_text='Length in hours, day=8h')
+
+    name = models.CharField(max_length=32, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return '%s #%s' % (self.name, self.id)
+
+
 class EmailAccount(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 

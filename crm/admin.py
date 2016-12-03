@@ -3,7 +3,7 @@ import datetime
 from django.contrib import admin
 
 from models import Account, Case, Contact, Email, EmailAccount, EmailAccountFolder, EmailConversation,\
-    EmailConversationReference, Tag
+    EmailConversationReference, Tag, Contract
 
 
 class ContactInline(admin.TabularInline):
@@ -82,6 +82,25 @@ class CaseAdmin(admin.ModelAdmin):
     )
 
 
+class ContractAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'account',
+        'price',
+        'length',
+
+        'owner',
+        'tag',
+    )
+    list_filter = (
+        'account',
+
+        'owner',
+        'tag',
+    )
+
+
 class EmailAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -141,6 +160,7 @@ admin.site.register(Tag)
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Case, CaseAdmin)
+admin.site.register(Contract, ContractAdmin)
 admin.site.register(EmailAccount, EmailAccountAdmin)
 admin.site.register(EmailAccountFolder)
 admin.site.register(Email, EmailAdmin)
