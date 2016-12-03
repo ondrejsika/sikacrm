@@ -11,6 +11,11 @@ class ContactInline(admin.TabularInline):
     extra = 0
 
 
+class ContractInline(admin.TabularInline):
+    model = Contract
+    extra = 0
+
+
 class CaseInline(admin.TabularInline):
     model = Case
     extra = 0
@@ -34,6 +39,7 @@ class AccountAdmin(admin.ModelAdmin):
     inlines = (
         ContactInline,
         CaseInline,
+        ContractInline,
     )
 
 

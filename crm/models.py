@@ -91,7 +91,7 @@ class Contract(models.Model):
     case = models.ForeignKey(Case, null=True, blank=True)
     tag = models.ForeignKey(Tag, null=True, blank=True)
 
-    start_at = models.DateTimeField()
+    start_at = models.DateField()
     price = models.IntegerField()
     length = models.IntegerField(help_text='Length in hours, day=8h')
 
