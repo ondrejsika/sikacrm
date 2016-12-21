@@ -1,3 +1,5 @@
+# coding: utf8
+
 import imaplib
 import email
 from email.header import decode_header
@@ -5,7 +7,7 @@ from email.utils import parsedate_tz
 
 
 def _decode(header):
-    return ' '.join(data for data, _ in decode_header(header))
+    return ' '.join(data.decode(_) if _ else data for data, _ in decode_header(header))
 
 
 class Email(object):
@@ -42,11 +44,11 @@ class Email(object):
 
                 # skip any text/plain (txt) attachments
                 if ctype == 'text/plain' and 'attachment' not in cdispo:
-                    body = part.get_payload(decode=True)  # decode
+                    body = part.get_payload(decode=True).decode(part.get_content_charset())  # decode
                     break
         # not multipart - i.e. plain text, no attachments, keeping fingers crossed
         else:
-            body = self._message.get_payload(decode=True)
+            body = self._message.get_payload(decode=True).decode(self._message.get_content_charset())
         return body
 
 
