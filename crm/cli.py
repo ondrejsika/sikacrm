@@ -76,7 +76,7 @@ FUNCTIONS = {
 }
 
 
-def run(*args, **options):
+def run(*args):
     func = args[0]
     args = args[1:]
 
