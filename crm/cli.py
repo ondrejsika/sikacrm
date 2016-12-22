@@ -22,6 +22,7 @@ def crm_load_emails():
         for folder in email_account.folder_set.all():
             imap.select(folder.folder)
 
+            id = None
             for id in imap.get_email_ids():
                 if id and id <= folder.last_id:
                     continue
