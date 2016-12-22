@@ -6,8 +6,12 @@ from email.header import decode_header
 from email.utils import parsedate_tz
 
 
-def _decode(header):
-    return ' '.join(data.decode(_) if _ else data for data, _ in decode_header(header))
+def _decode(text, charset):
+    return text.decode(charset) if charset else text
+
+
+def _decode_header(header):
+    return ' '.join(_decode(data, charset) for data, charset in decode_header(header))
 
 
 class Email(object):
@@ -17,16 +21,16 @@ class Email(object):
         self._message = email.message_from_string(self._raw_message)
 
     def get_from(self):
-        return _decode(self._message['from'])
+        return _decode_header(self._message['from'])
 
     def get_to(self):
-        return _decode(self._message['to'])
+        return _decode_header(self._message['to'])
 
     def get_subject(self):
-        return _decode(self._message['subject'])
+        return _decode_header(self._message['subject'])
 
     def get_message_id(self):
-        return _decode(self._message['message-id'])
+        return _decode_header(self._message['message-id'])
 
     def get_references(self):
         if not self._message['references']:
@@ -34,7 +38,7 @@ class Email(object):
         return self._message['references'].replace('\r\n', '').split()
 
     def get_date(self):
-        return parsedate_tz(_decode(self._message['date']))
+        return parsedate_tz(_decode_header(self._message['date']))
 
     def get_body(self):
         if self._message.is_multipart():
@@ -44,11 +48,11 @@ class Email(object):
 
                 # skip any text/plain (txt) attachments
                 if ctype == 'text/plain' and 'attachment' not in cdispo:
-                    body = part.get_payload(decode=True).decode(part.get_content_charset())  # decode
+                    body = _decode(part.get_payload(decode=True), part.get_content_charset())  # decode
                     break
         # not multipart - i.e. plain text, no attachments, keeping fingers crossed
         else:
-            body = self._message.get_payload(decode=True).decode(self._message.get_content_charset())
+            body = _decode(self._message.get_payload(decode=True), self._message.get_content_charset())
         return body
 
 
