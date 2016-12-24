@@ -27,6 +27,9 @@ class AccountAdmin(admin.ModelAdmin):
         'last_activity',
         'next_activity',
 
+        '_get_num_cases',
+        '_get_num_contracts',
+
         'owner',
         'tag',
     )
@@ -41,6 +44,15 @@ class AccountAdmin(admin.ModelAdmin):
         CaseInline,
         ContractInline,
     )
+
+    def _get_num_cases(self, obj):
+        return obj.case_set.all().count()
+    _get_num_cases.short_description = 'Num. Cases'
+    # _get_num_emails.admin_order_field = ...
+
+    def _get_num_contracts(self, obj):
+        return obj.contract_set.all().count()
+    _get_num_contracts.short_description = 'Num. Contr.'
 
 
 class ContactAdmin(admin.ModelAdmin):
@@ -73,6 +85,8 @@ class CaseAdmin(admin.ModelAdmin):
         'account',
         'state',
 
+        '_get_num_conversations',
+
         'owner',
         'tag',
     )
@@ -86,6 +100,12 @@ class CaseAdmin(admin.ModelAdmin):
     inlines = (
         EmailConversationInline,
     )
+
+    def _get_num_conversations(self, obj):
+        return obj.emailconversation_set.all().count()
+    _get_num_conversations.short_description = 'Num. Conv.'
+    # _get_num_conversations.admin_order_field = ...
+
 
 
 class ContractAdmin(admin.ModelAdmin):
@@ -138,6 +158,8 @@ class EmailConversationAdmin(admin.ModelAdmin):
         'name',
         'case',
 
+        '_get_num_emails',
+
         'email_account',
         'tag',
     )
@@ -150,6 +172,10 @@ class EmailConversationAdmin(admin.ModelAdmin):
         EmailInline,
     )
 
+    def _get_num_emails(self, obj):
+        return obj.email_set.all().count()
+    _get_num_emails.short_description = 'Num. emails'
+    # _get_num_emails.admin_order_field = ...
 
 class EmailAccountFolderInline(admin.TabularInline):
     model = EmailAccountFolder
