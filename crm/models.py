@@ -51,7 +51,7 @@ class Contact(models.Model):
     note = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return '%s #%s' % (self.name, self.id)
+        return '%s / %s #%s' % (self.account.name, self.name, self.id)
 
 
 class Case(models.Model):
@@ -80,7 +80,7 @@ class Case(models.Model):
     note = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return '%s #%s' % (self.name, self.id)
+        return '%s / %s #%s' % (self.account.name, self.name, self.id)
 
 
 class Contract(models.Model):
@@ -100,7 +100,7 @@ class Contract(models.Model):
     note = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return '%s #%s' % (self.name, self.id)
+        return '%s / %s #%s' % (self.account.name, self.name, self.id)
 
 
 class EmailAccount(models.Model):
