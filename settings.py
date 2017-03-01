@@ -10,6 +10,26 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+
+def _env(variable, default=None):
+    return os.environ.get(variable, default)
+
+
+def _env_bool(variable, default=None):
+    if _env(variable, default) == 'true':
+        return True
+    elif _env(variable, default) == 'false':
+        return False
+    else:
+        return default
+
+ENVIRONMENT = _env('ENVIRONMENT')
+
+if not ENVIRONMENT:
+    raise Exception('No environment selected')
+
+
 BASE_DIR = os.path.dirname(__file__)
 
 
@@ -20,10 +40,10 @@ BASE_DIR = os.path.dirname(__file__)
 SECRET_KEY = 'rjgs6=#t#g!b)vfrp9twv+nel9v0=5pzmnnnkmn&-269$7t1w2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = _env_bool('DEBUG', False)
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = _env('ALLOWED_HOSTS').split() if _env('ALLOWED_HOSTS') else []
 
 
 # Application definition
@@ -78,8 +98,12 @@ WSGI_APPLICATION = 'wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': _env('DATABASE_ENGINE'),
+        'NAME': _env('DATABASE_NAME'),
+        'USER': _env('DATABASE_USER'),
+        'PASSWORD': _env('DATABASE_PASSWORD'),
+        'HOST': _env('DATABASE_HOST'),
+        'PORT': _env('DATABASE_PORT'),
     }
 }
 

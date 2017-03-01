@@ -9,6 +9,16 @@ services:
      - .:/app
     depends_on:
       - prepare
+    environment:
+      - ENVIRONMENT
+      - DATABASE_ENGINE
+      - DATABASE_NAME
+      - DATABASE_USER
+      - DATABASE_PASSWORD
+      - DATABASE_HOST
+      - DATABASE_PORT
+      - DEBUG
+      - ALLOWED_HOSTS
 
   nginx:
     build:
@@ -29,4 +39,14 @@ services:
       dockerfile: Dockerfile.app
     volumes:
      - .:/app
+    environment:
+      - ENVIRONMENT
+      - DATABASE_ENGINE
+      - DATABASE_NAME
+      - DATABASE_USER
+      - DATABASE_PASSWORD
+      - DATABASE_HOST
+      - DATABASE_PORT
+      - DEBUG
+      - ALLOWED_HOSTS
     command: python manage.py collectstatic --noinput
