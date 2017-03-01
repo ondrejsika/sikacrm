@@ -5,4 +5,9 @@
 
 Fast and lightweight CRM written in Python.
 
+## Run
+
+```
+EXTERNAL_PORT=8000 docker-compose up
+```
 

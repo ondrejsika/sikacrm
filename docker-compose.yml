@@ -1,0 +1,32 @@
+version: "2"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    volumes:
+     - .:/app
+    depends_on:
+      - prepare
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    volumes:
+     - .:/app
+    ports:
+      - ${EXTERNAL_PORT}:80
+    depends_on:
+        - app
+    links:
+        - app
+
+  prepare:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    volumes:
+     - .:/app
+    command: python manage.py collectstatic --noinput
