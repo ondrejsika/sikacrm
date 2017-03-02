@@ -49,4 +49,4 @@ services:
       - DATABASE_PORT
       - DEBUG
       - ALLOWED_HOSTS
-    command: python manage.py collectstatic --noinput
+    command: bash /app/prepare.sh
