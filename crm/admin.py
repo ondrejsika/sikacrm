@@ -78,6 +78,23 @@ class EmailConversationInline(admin.TabularInline):
     extra = 0
 
 
+class IsOpenCaseFilter(admin.SimpleListFilter):
+    title = 'Is Open'
+    parameter_name = 'is_open'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('open', 'Open'),
+            ('closed', 'Closed'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'open':
+            return queryset.filter(state__in=Case.OPEN_STATES)
+        if self.value() == 'closed':
+            return queryset.filter(state__in=Case.CLOSED_STATES)
+
+
 class CaseAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -91,11 +108,13 @@ class CaseAdmin(admin.ModelAdmin):
         'tag',
     )
     list_filter = (
-        'account',
+        IsOpenCaseFilter,
         'state',
 
         'owner',
         'tag',
+
+        'account',
     )
     inlines = (
         EmailConversationInline,

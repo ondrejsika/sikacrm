@@ -61,6 +61,9 @@ class Case(models.Model):
     DONE = 'done'
     CANCELLED = 'cancelled'
 
+    OPEN_STATES = (NEW, IN_PROGRESS, APPROVED)
+    CLOSED_STATES = (CANCELLED, DONE)
+
     created = models.DateTimeField(auto_now_add=True)
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
