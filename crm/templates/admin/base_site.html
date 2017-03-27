@@ -3,7 +3,9 @@
 {% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}" style="color: #f4f379">Ondrej Sika CRM</a></h1>
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}" style="color: #f4f379">Ondrej Sika CRM</a>
+    ({% if request.session.workspace_name %}{{ request.session.workspace_name }}{% else %}&lt;default&gt;{% endif %})</h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

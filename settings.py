@@ -58,6 +58,7 @@ INSTALLED_APPS = (
 
     'crm',
     'mailing',
+    'workspace',
 )
 
 MIDDLEWARE_CLASSES = (

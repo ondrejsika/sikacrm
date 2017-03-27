@@ -4,6 +4,7 @@ from django.contrib import admin
 
 from models import Account, Case, Contact, Email, EmailAccount, EmailAccountFolder, EmailConversation,\
     EmailConversationReference, Tag, Contract
+from workspace.admin_common import WorkspaceAdminMixin
 
 
 class ContactInline(admin.TabularInline):
@@ -21,7 +22,7 @@ class CaseInline(admin.TabularInline):
     extra = 0
 
 
-class AccountAdmin(admin.ModelAdmin):
+class AccountAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
     list_display = (
         'name',
         'last_activity',
@@ -55,7 +56,7 @@ class AccountAdmin(admin.ModelAdmin):
     _get_num_contracts.short_description = 'Num. Contr.'
 
 
-class ContactAdmin(admin.ModelAdmin):
+class ContactAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
     list_display = (
         'account',
         'name',
@@ -73,12 +74,12 @@ class ContactAdmin(admin.ModelAdmin):
     )
 
 
-class EmailConversationInline(admin.TabularInline):
+class EmailConversationInline(WorkspaceAdminMixin, admin.TabularInline):
     model = EmailConversation
     extra = 0
 
 
-class IsOpenCaseFilter(admin.SimpleListFilter):
+class IsOpenCaseFilter(WorkspaceAdminMixin, admin.SimpleListFilter):
     title = 'Is Open'
     parameter_name = 'is_open'
 
@@ -95,7 +96,7 @@ class IsOpenCaseFilter(admin.SimpleListFilter):
             return queryset.filter(state__in=Case.CLOSED_STATES)
 
 
-class CaseAdmin(admin.ModelAdmin):
+class CaseAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'name',
@@ -126,8 +127,7 @@ class CaseAdmin(admin.ModelAdmin):
     # _get_num_conversations.admin_order_field = ...
 
 
-
-class ContractAdmin(admin.ModelAdmin):
+class ContractAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'name',
@@ -146,7 +146,7 @@ class ContractAdmin(admin.ModelAdmin):
     )
 
 
-class EmailAdmin(admin.ModelAdmin):
+class EmailAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'subject',
@@ -166,12 +166,12 @@ class EmailAdmin(admin.ModelAdmin):
     )
 
 
-class EmailInline(admin.TabularInline):
+class EmailInline(WorkspaceAdminMixin, admin.TabularInline):
     model = Email
     extra = 0
 
 
-class EmailConversationAdmin(admin.ModelAdmin):
+class EmailConversationAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'name',
@@ -196,18 +196,23 @@ class EmailConversationAdmin(admin.ModelAdmin):
     _get_num_emails.short_description = 'Num. emails'
     # _get_num_emails.admin_order_field = ...
 
-class EmailAccountFolderInline(admin.TabularInline):
+
+class EmailAccountFolderInline(WorkspaceAdminMixin, admin.TabularInline):
     model = EmailAccountFolder
     extra = 0
 
 
-class EmailAccountAdmin(admin.ModelAdmin):
+class EmailAccountAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
     inlines = (
         EmailAccountFolderInline,
     )
 
 
-admin.site.register(Tag)
+class TagAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Tag, TagAdmin)
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Case, CaseAdmin)

@@ -4,6 +4,8 @@ from django.db import models
 
 
 class Tag(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     name = models.CharField(max_length=32)
 
     def __unicode__(self):
@@ -11,6 +13,8 @@ class Tag(models.Model):
 
 
 class Account(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
@@ -38,6 +42,8 @@ class Account(models.Model):
 
 
 class Contact(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
@@ -64,6 +70,8 @@ class Case(models.Model):
     OPEN_STATES = (NEW, IN_PROGRESS, APPROVED)
     CLOSED_STATES = (CANCELLED, DONE)
 
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
@@ -87,6 +95,8 @@ class Case(models.Model):
 
 
 class Contract(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
 
     owner = models.ForeignKey('auth.User', null=True, blank=True)
@@ -107,6 +117,8 @@ class Contract(models.Model):
 
 
 class EmailAccount(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
 
     user = models.ForeignKey('auth.User', null=True, blank=True)
@@ -130,6 +142,8 @@ class EmailAccount(models.Model):
 
 
 class EmailAccountFolder(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
 
     email_account = models.ForeignKey(EmailAccount, related_name='folder_set')
@@ -141,6 +155,8 @@ class EmailAccountFolder(models.Model):
 
 
 class EmailConversation(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
     tag = models.ForeignKey(Tag, null=True, blank=True)
 
@@ -153,6 +169,8 @@ class EmailConversation(models.Model):
 
 
 class EmailConversationReference(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
 
     email_conversation = models.ForeignKey(EmailConversation, null=True, blank=True)
@@ -164,6 +182,8 @@ class EmailConversationReference(models.Model):
 
 
 class Email(models.Model):
+    workspace = models.ForeignKey('workspace.Workspace')
+
     created = models.DateTimeField(auto_now_add=True)
 
     email_conversation = models.ForeignKey(EmailConversation)
