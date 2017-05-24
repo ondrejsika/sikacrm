@@ -117,9 +117,9 @@ class CaseAdmin(WorkspaceAdminMixin, admin.ModelAdmin):
 
         'account',
     )
-    inlines = (
-        EmailConversationInline,
-    )
+    # inlines = (
+    #     EmailConversationInline,
+    # )
 
     def _get_num_conversations(self, obj):
         return obj.emailconversation_set.all().count()
