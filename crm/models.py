@@ -66,6 +66,7 @@ class Case(models.Model):
     APPROVED = 'approved'
     DONE = 'done'
     CANCELLED = 'cancelled'
+    TIMED_OUT = 'timed_out'
 
     OPEN_STATES = (NEW, IN_PROGRESS, APPROVED)
     CLOSED_STATES = (CANCELLED, DONE)
@@ -84,6 +85,7 @@ class Case(models.Model):
         (APPROVED, 'Approved'),
         (DONE, 'Done'),
         (CANCELLED, 'Cancelled'),
+        (TIMED_OUT, 'Timed out'),
     ))
 
     name = models.CharField(max_length=32, null=True, blank=True)
